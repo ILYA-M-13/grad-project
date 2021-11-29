@@ -1,5 +1,7 @@
 package main.model;
 
+import main.enumerated.ValuesGlobalSetting;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,13 +12,15 @@ public class GlobalSettings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String code;
+    private ValuesGlobalSetting.Code code;
 
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String value;
+    private ValuesGlobalSetting.Value value;
 
 }

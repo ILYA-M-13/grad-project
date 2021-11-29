@@ -1,4 +1,4 @@
-package main.model;
+package main.enumerated;
 
 public enum ModerationStatus {
     NEW,

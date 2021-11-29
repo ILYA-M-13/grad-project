@@ -26,7 +26,9 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-    private String code;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private CaptchaCode code;
 
     @Column(columnDefinition = "TEXT")
     private String photo;
@@ -40,12 +42,10 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<PostComment> postComments;
 
+
+
     public List<PostVote> getPostVotes() {
         return postVotes;
-    }
-
-    public void setPostVotes(List<PostVote> postVotes) {
-        this.postVotes = postVotes;
     }
 
     public List<Post> getPosts() {
@@ -104,12 +104,24 @@ public class User {
         this.password = password;
     }
 
-    public String getCode() {
+    public CaptchaCode getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(CaptchaCode code) {
         this.code = code;
+    }
+
+    public void setPostVotes(List<PostVote> postVotes) {
+        this.postVotes = postVotes;
+    }
+
+    public List<PostComment> getPostComments() {
+        return postComments;
+    }
+
+    public void setPostComments(List<PostComment> postComments) {
+        this.postComments = postComments;
     }
 
     public String getPhoto() {
