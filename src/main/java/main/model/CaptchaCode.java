@@ -1,8 +1,11 @@
 package main.model;
 
+import lombok.Data;
+
+
 import javax.persistence.*;
 import java.util.Date;
-
+@Data
 @Entity
 @Table(name = "captcha_codes")
 public class CaptchaCode {
@@ -15,52 +18,9 @@ public class CaptchaCode {
     private Date time;
 
     @Column(columnDefinition = "TINYTEXT",nullable = false)
-    private String code;
+    private String code;     //код, отображаемый на картинкке капчи
 
     @Column(columnDefinition = "TINYTEXT",name = "secret_code",nullable = false)
-    private String secretCode;
+    private String secretCode;//код, передаваемый в параметре
 
-    @OneToOne(mappedBy = "code")
-    private User user;
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getSecretCode() {
-        return secretCode;
-    }
-
-    public void setSecretCode(String secretCode) {
-        this.secretCode = secretCode;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-}
+  }

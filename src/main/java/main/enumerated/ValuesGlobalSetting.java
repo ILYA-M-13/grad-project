@@ -1,6 +1,10 @@
 package main.enumerated;
 
+import lombok.AllArgsConstructor;
+
 public class ValuesGlobalSetting {
+
+    @AllArgsConstructor
     public enum Code {
 
         MULTIUSER_MODE("Многопользовательский режим"),
@@ -9,15 +13,13 @@ public class ValuesGlobalSetting {
 
         private final String name;
 
-        Code(String name) {
-            this.name = name;
-        }
-
         public String getName() {
             return name;
         }
+
     }
 
+    @AllArgsConstructor
     public enum Value {
         YES("Да", true),
         NO("Нет", false);
@@ -25,10 +27,6 @@ public class ValuesGlobalSetting {
         private final String name;
         private final boolean value;
 
-        Value(String name, boolean value) {
-            this.name = name;
-            this.value = value;
-        }
 
         public String getName() {
             return name;
@@ -37,5 +35,7 @@ public class ValuesGlobalSetting {
         public boolean getValue() {
             return value;
         }
+
+
     }
 }

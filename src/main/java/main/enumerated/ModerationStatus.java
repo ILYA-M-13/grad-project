@@ -1,10 +1,15 @@
 package main.enumerated;
 
-public enum ModerationStatus {
-    NEW,
-    ACCEPTED,
-    DECLINED;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 
-    ModerationStatus() {
-    }
-}
+@Getter
+@AllArgsConstructor
+public enum ModerationStatus {
+    NEW("NEW"),
+    ACCEPTED("ACCEPTED"),
+    DECLINED("DECLINED");
+    private final String name;
+
+  }

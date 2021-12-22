@@ -1,8 +1,11 @@
 package main.model;
 
+import lombok.Data;
+
+
 import javax.persistence.*;
 import java.util.Date;
-
+@Data
 @Entity
 @Table(name = "post_comments")
 public class PostComment {
@@ -11,8 +14,12 @@ public class PostComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "parent_id")
-    private int parentId;
+    //комментарий, на который оставлен этот комментарий
+    // (может быть NULL, если комментарий оставлен просто к посту)
+    @ManyToOne
+    @JoinColumn(name="parent_id", referencedColumnName = "id")
+    private PostComment parentComment;
+
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Post post;
@@ -26,51 +33,5 @@ public class PostComment {
     @Column(nullable = false)
     private String text;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 }

@@ -1,11 +1,14 @@
 package main.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.ToString;
 import main.enumerated.ModerationStatus;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
+@Data
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -21,8 +24,8 @@ public class Post {
     @Column(nullable = false)
     private ModerationStatus moderationStatus;
 
-    @Column(name = "moderator_id")
-    private int moderatorId;
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private User moderatorUser;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private User user;
@@ -52,99 +55,4 @@ public class Post {
     private List<PostVote> postVotes;
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public ModerationStatus getModerationStatus() {
-        return moderationStatus;
-    }
-
-    public void setModerationStatus(ModerationStatus moderationStatus) {
-        this.moderationStatus = moderationStatus;
-    }
-
-    public int getModeratorId() {
-        return moderatorId;
-    }
-
-    public void setModeratorId(int moderatorId) {
-        this.moderatorId = moderatorId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<PostComment> getPostComments() {
-        return postComments;
-    }
-
-    public void setPostComments(List<PostComment> postComments) {
-        this.postComments = postComments;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public int getViewCount() {
-        return viewCount;
-    }
-
-    public void setViewCount(int viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public List<PostVote> getPostVotes() {
-        return postVotes;
-    }
-
-    public void setPostVotes(List<PostVote> postVotes) {
-        this.postVotes = postVotes;
-    }
 }

@@ -1,8 +1,11 @@
 package main.model;
 
+import lombok.Data;
+
+
 import javax.persistence.*;
 import java.util.Date;
-
+@Data
 @Entity
 @Table(name = "posts_votes")
 public class PostVote {
@@ -24,43 +27,4 @@ public class PostVote {
     private int value;
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
 }
