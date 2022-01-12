@@ -31,11 +31,11 @@ public class SettingsService {
 
             switch (globalSettings.getCode()) {
                 case MULTIUSER_MODE:
-                    settingsResponse.setMultiuserMode(globalSettings.getValue().getValue());
+                    settingsResponse.setMultiuserMode(globalSettings.getValue().isValue());
                 case POST_PREMODERATION:
-                    settingsResponse.setPostPremoderation(globalSettings.getValue().getValue());
+                    settingsResponse.setPostPremoderation(globalSettings.getValue().isValue());
                 case STATISTICS_IS_PUBLIC:
-                    settingsResponse.setStatisticsIsPublic(globalSettings.getValue().getValue());
+                    settingsResponse.setStatisticsIsPublic(globalSettings.getValue().isValue());
             }
         }
         return settingsResponse;

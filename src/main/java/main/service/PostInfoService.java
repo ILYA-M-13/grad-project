@@ -31,18 +31,21 @@ public class PostInfoService {
         Collection<Post> collection = postInfoRepository.postCount();
         int postCount = collection.size();
 
-        //ToDo: доделать пагинацию
-        Pageable pageable = PageRequest.of((offset == 0) ? offset : offset + limit, limit);
+        Pageable pageable = PageRequest.of((offset == 0) ? offset : offset / limit, limit);
 
-        Page<Post> infoRepositoryAll = postInfoRepository.findAll(pageable);
+        Page<Post> infoRepositoryAll = postInfoRepository.findAllOrderByTimeDesc(pageable);
 
         switch (modePosts) {
+
             case early:
-                infoRepositoryAll = postInfoRepository.postListFromOld(pageable);
+                infoRepositoryAll = postInfoRepository.findALLOrderByTimeAsc(pageable);
+                break;
             case popular:
-                infoRepositoryAll = postInfoRepository.postListFromCountComment(pageable);
+                infoRepositoryAll = postInfoRepository.findALLOrderByPostCommentsDesc(pageable);
+                break;
             case best:
-                infoRepositoryAll = postInfoRepository.postListFromCountVotes(pageable);
+                infoRepositoryAll = postInfoRepository.findALLOrderByPostVotes(pageable);
+                break;
         }
 
         List<Post> posts = new ArrayList<>();

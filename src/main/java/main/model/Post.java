@@ -1,8 +1,6 @@
 package main.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.ToString;
 import main.enumerated.ModerationStatus;
 
 import javax.persistence.*;
@@ -17,7 +15,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(columnDefinition = "TINYINT(1)",name = "is_active",nullable = false)
+    @Column(nullable = false,columnDefinition = "TINYINT", length = 1,name = "is_active")
     private boolean isActive;
 
     @Enumerated(EnumType.STRING)
@@ -39,7 +37,7 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "LONGTEXT")
     private String text;
 
     @Column(name = "view_count",nullable = false)

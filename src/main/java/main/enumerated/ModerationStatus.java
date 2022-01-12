@@ -1,7 +1,6 @@
 package main.enumerated;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

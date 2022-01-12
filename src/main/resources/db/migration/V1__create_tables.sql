@@ -30,7 +30,7 @@ create table posts (
  id integer not null auto_increment,
  is_active TINYINT(1) not null,
  moderation_status varchar(255) not null,
- text text not null,
+ text LONGTEXT not null,
  time datetime not null,
  title varchar(255) not null,
  view_count integer not null,

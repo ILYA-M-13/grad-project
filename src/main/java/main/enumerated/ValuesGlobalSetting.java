@@ -1,10 +1,12 @@
 package main.enumerated;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 public class ValuesGlobalSetting {
 
     @AllArgsConstructor
+    @Getter
     public enum Code {
 
         MULTIUSER_MODE("Многопользовательский режим"),
@@ -12,30 +14,16 @@ public class ValuesGlobalSetting {
         STATISTICS_IS_PUBLIC("Показывать всем статистику блога");
 
         private final String name;
-
-        public String getName() {
-            return name;
-        }
-
     }
 
     @AllArgsConstructor
-    public enum Value {
+    @Getter
+     public enum Value {
         YES("Да", true),
         NO("Нет", false);
 
         private final String name;
         private final boolean value;
-
-
-        public String getName() {
-            return name;
-        }
-
-        public boolean getValue() {
-            return value;
-        }
-
 
     }
 }
