@@ -29,7 +29,7 @@ create table post_comments (
 create table posts (
  id integer not null auto_increment,
  is_active TINYINT(1) not null,
- moderation_status varchar(255) not null,
+ moderation_status enum('NEW', 'ACCEPTED', 'DECLINED') default 'NEW' not null,
  text LONGTEXT not null,
  time datetime not null,
  title varchar(255) not null,
