@@ -1,4 +1,4 @@
-package main.enumerated;
+package main.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

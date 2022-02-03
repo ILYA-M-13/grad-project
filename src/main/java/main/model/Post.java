@@ -1,7 +1,6 @@
 package main.model;
 
 import lombok.Data;
-import main.enumerated.ModerationStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;

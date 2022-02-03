@@ -1,32 +1,25 @@
 package main.service;
 
+import lombok.AllArgsConstructor;
 import main.api.response.tagsResponse.TagsResponse;
+import main.api.response.tagsResponse.TagsResponseDTO;
 import main.repository.TagsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class TagsService {
-
     TagsRepository tagsRepository;
 
-    @Autowired
-    public TagsService(TagsRepository tagsRepository) {
-        this.tagsRepository = tagsRepository;
-    }
-
-    public Map<String, List<TagsResponse>> getTags(String query) {
+    public TagsResponseDTO getTags(String query) {
 
         List<TagsResponse> tags = tagsRepository.findTagWithWeight();
-        Map<String, List<TagsResponse>> response = new HashMap<>();
-
-        response.put("tags", query == null ? tags : tags.stream()
+        return new TagsResponseDTO(query == null ? tags : tags.stream()
                 .filter(t -> t.getName().toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT)))
                 .collect(Collectors.toList()));
-
-        return response;
     }
 }

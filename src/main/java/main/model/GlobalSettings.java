@@ -1,7 +1,6 @@
 package main.model;
 
 import lombok.Data;
-import main.enumerated.ValuesGlobalSetting;
 
 import javax.persistence.*;
 @Data

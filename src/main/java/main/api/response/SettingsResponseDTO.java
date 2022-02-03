@@ -1,10 +1,12 @@
 package main.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
 @Data
+@AllArgsConstructor
 public class SettingsResponseDTO {
 
     @JsonProperty("MULTIUSER_MODE")
