@@ -1,25 +1,20 @@
 package main.service;
 
 import lombok.AllArgsConstructor;
-import main.api.response.SettingsResponseDTO;
+import main.api.response.SettingsResponse;
 import main.repository.SettingsRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
 public class SettingsService {
     SettingsRepository settingsRepository;
 
-    public SettingsResponseDTO getGlobalSettings() {
+    public SettingsResponse getGlobalSettings() {
+        return new SettingsResponse(
+                settingsRepository.findGlobalSettingByName("MULTIUSER_MODE").equals("YES"),
+                settingsRepository.findGlobalSettingByName("POST_PREMODERATION").equals("YES"),
+                settingsRepository.findGlobalSettingByName("STATISTICS_IS_PUBLIC").equals("YES"));
 
-        return new SettingsResponseDTO(
-                Objects.equals(settingsRepository.findGlobalSettingByName("Многопользовательский режим")
-                        .get().getValue().toString(), "YES"),
-                Objects.equals(settingsRepository.findGlobalSettingByName("Премодерация постов")
-                        .get().getValue().toString(), "YES"),
-                Objects.equals(settingsRepository.findGlobalSettingByName("Показывать всем статистику блога")
-                        .get().getValue().toString(), "YES"));
     }
 }

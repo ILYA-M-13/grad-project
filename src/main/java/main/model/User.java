@@ -46,5 +46,8 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<PostComment> postComments;
 
+    public Role getRole() {
+        return isModerator ? Role.MODERATOR : Role.USER;
+    }
 
 }

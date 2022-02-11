@@ -2,6 +2,7 @@ package main.service;
 
 import lombok.AllArgsConstructor;
 import main.api.response.CommentResponse;
+import main.api.response.authCheckResponse.AuthCheckUser;
 import main.api.response.postsResponse.PostsCommentResponse;
 import main.api.response.postsResponse.PostsInfoResponse;
 import main.api.response.UserResponse;
@@ -19,6 +20,16 @@ public class ConverterService {
     static final int MILLISEC_IN_SEC = 1000;
     PostInfoRepository postInfoRepository;
 
+    public AuthCheckUser convertAuthChekUser(User user){
+        return new AuthCheckUser(user.getId(),
+                user.getName(),
+                user.getPhoto(),
+                user.getEmail(),
+                user.isModerator(),
+                user.isModerator()?user.getModeratedPosts().size():0,
+                user.isModerator());
+
+    }
     public PostsInfoResponse convertPostToDTO(Post post) {
         return new PostsInfoResponse(post.getId(),
                 post.getTime().getTime() / MILLISEC_IN_SEC,

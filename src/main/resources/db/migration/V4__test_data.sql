@@ -1,9 +1,9 @@
 INSERT users (id, name, password, is_moderator, email, reg_time)
 VALUES
-('1', 'Петров Петр', '12345', '1', 'email1@mail.ru', '2021-01-01 10:00'),
-('2', 'Иванов иван', '56789', '0', 'email2@mail.ru', '2020-08-08 11:00'),
-('3', 'Александр Смирнов', '987652', '0', 'email12@mail.ru', '2020-06-02 11:00'),
-('4', 'Сидоров Сидор', '13579', '0', 'email3@mail.ru', '2020-04-04 12:00');
+('1', 'Петров Петр', '$2a$12$zRz8.rFSHPMZXLZEE7T/FeYnkPKKz22oXT3WqSE1Aspv8YFaYaQpi', '1', 'email1@mail.ru', '2021-01-01 10:00'),
+('2', 'Иванов иван', '$2a$12$zRz8.rFSHPMZXLZEE7T/FeYnkPKKz22oXT3WqSE1Aspv8YFaYaQpi', '0', 'email2@mail.ru', '2020-08-08 11:00'),
+('3', 'Александр Смирнов', '$2a$12$zRz8.rFSHPMZXLZEE7T/FeYnkPKKz22oXT3WqSE1Aspv8YFaYaQpi', '0', 'email3@mail.ru', '2020-06-02 11:00'),
+('4', 'Сидоров Сидор', '$2a$12$zRz8.rFSHPMZXLZEE7T/FeYnkPKKz22oXT3WqSE1Aspv8YFaYaQpi', '0', 'email4@mail.ru', '2020-04-04 12:00');
 
 INSERT posts (id, is_active, moderation_status, moderator_user_id, user_id, time, title, text, view_count)
 VALUES

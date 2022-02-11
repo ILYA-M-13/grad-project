@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SettingsResponseDTO {
+public class SettingsResponse {
 
     @JsonProperty("MULTIUSER_MODE")
     private  boolean multiuserMode;
