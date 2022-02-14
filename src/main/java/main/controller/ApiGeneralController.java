@@ -27,22 +27,22 @@ public class ApiGeneralController {
     private final CalendarService calendarService;
 
     @GetMapping("/init")
-    private InitResponseDTO init() {
+    public InitResponseDTO init() {
         return initResponse;
     }
 
     @GetMapping("/settings")
-    private ResponseEntity<SettingsResponse> settings() {
+    public ResponseEntity<SettingsResponse> settings() {
         return ResponseEntity.ok(settingsService.getGlobalSettings());
     }
 
     @GetMapping("/tag")
-    private ResponseEntity<TagsResponseDTO> tags(@RequestParam(value = "query", required = false) String query) {
+    public ResponseEntity<TagsResponseDTO> tags(@RequestParam(value = "query", required = false) String query) {
         return ResponseEntity.ok(tagsService.getTags(query));
     }
 
     @GetMapping("/calendar")
-    private ResponseEntity<CalendarResponse> calendar(@RequestParam(value = "year", required = false) Set<Integer> years) {
+    public ResponseEntity<CalendarResponse> calendar(@RequestParam(value = "year", required = false) Set<Integer> years) {
         return ResponseEntity.ok(calendarService.getPostsInCalendar(years));
     }
 }

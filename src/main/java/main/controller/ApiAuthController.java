@@ -22,28 +22,28 @@ public class ApiAuthController {
     private final CaptchaService captchaService;
 
     @GetMapping("/check")
-    private ResponseEntity<AuthCheckResponse> authCheck(Principal principal) {
+    public ResponseEntity<AuthCheckResponse> authCheck(Principal principal) {
             return ResponseEntity.ok(authCheckService.getAuthCheckInfo(principal));
     }
 
     @GetMapping("/captcha")
-    private ResponseEntity<CaptchaResponse> captcha() {
+    public ResponseEntity<CaptchaResponse> captcha() {
         return ResponseEntity.ok(captchaService.getCaptcha());
     }
 
     @PostMapping("/register")
-    private ResponseEntity<RegistrationErrorResponse> register(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<RegistrationErrorResponse> register(@RequestBody RegistrationRequest registrationRequest) {
         return ResponseEntity.ok(authCheckService.getRegister(registrationRequest));
     }
 
     @PostMapping("/login")
-    private ResponseEntity<AuthCheckResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthCheckResponse> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authCheckService.login(loginRequest));
     }
 
     @PreAuthorize("hasAuthority('user:write')")
     @GetMapping("/logout")
-    private ResponseEntity<AuthCheckResponse> logout() {
+    public ResponseEntity<AuthCheckResponse> logout() {
         return ResponseEntity.ok(authCheckService.logout());
     }
 }

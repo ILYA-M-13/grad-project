@@ -26,7 +26,7 @@ public class PostInfoService {
     private final PostInfoRepository postInfoRepository;
     private final UserRepository userRepository;
     private final ConverterService converter;
-    AuthCheckService authCheckService;
+    private final AuthCheckService authCheckService;
 
     public PostsResponseDTO getAllPosts(int offset, int limit, ModePosts modePosts) {
         Pageable pageable = PageRequest.of(offset / limit, limit);
@@ -122,23 +122,26 @@ public class PostInfoService {
         return new PostsResponseDTO(pagePosts.getTotalElements(), list);
     }
 
+    public PostsCommentResponse getPostsById(int id) {
+        Post post = postInfoRepository.findActivePostById(id).get();
+        post.setViewCount(post.getViewCount() + 1);
+        postInfoRepository.save(post);
+        return converter.convertPostToPostCommentResponse(post);
+    }
+
     public PostsCommentResponse getPostsById(int id, Principal principal) {
-        Optional<Post> OptPost = postInfoRepository.findPostById(id);
-//TODO:поправить подсчет просмотров
-        if (authCheckService.getAuthCheckInfo(principal).isResult()) {
-            Optional<User> user = userRepository.findByEmail(principal.getName());
-            Post post = OptPost.get();
-            String email = post.getUser().getEmail();
-            if (!user.get().isModerator() || !principal.getName().equals(email)) {
-                post.setViewCount(post.getViewCount() + 1);
-                postInfoRepository.save(post);
-            }
+        Optional<User> user = userRepository.findByEmail(principal.getName());
+        Post post = postInfoRepository.findById(id).get();
+        String email = post.getUser().getEmail();
+        if (user.get().isModerator() || principal.getName().equals(email)) {
+            return converter.convertPostToPostCommentResponse(post);
         } else {
-            Post post = OptPost.get();
-            post.setViewCount(post.getViewCount() + 1);
-            postInfoRepository.save(post);
+            Post activePost = postInfoRepository.findActivePostById(id).get();
+            String activeEmail = activePost.getUser().getEmail();
+            activePost.setViewCount(post.getViewCount() + 1);
+            postInfoRepository.save(activePost);
+            return converter.convertPostToPostCommentResponse(activePost);
         }
-        return OptPost.map(converter::convertPostToPostCommentResponse).orElse(null);
     }
 
 }

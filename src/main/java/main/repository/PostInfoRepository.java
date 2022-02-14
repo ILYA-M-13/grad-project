@@ -59,7 +59,7 @@ public interface PostInfoRepository extends JpaRepository<Post, Integer> {
     Page<Post> findAllByTag(Pageable pageable, @Param("tag") String tag);
 
     @Query(SELECT + WHERE + " and p.id like :id")
-    Optional<Post> findPostById(@Param("id") int id);
+    Optional<Post> findActivePostById(@Param("id") int id);
 
     @Query("select YEAR(p.time) as pt " +
             "from Post p " + WHERE + " group by pt order by pt asc")
