@@ -3,7 +3,7 @@ package main.api.response.postsResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import main.api.response.CommentResponse;
+import main.api.response.commentResponse.CommentResponse;
 import main.api.response.UserResponse;
 
 import java.util.List;

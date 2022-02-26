@@ -1,9 +1,13 @@
 package main.controller;
 
 import lombok.RequiredArgsConstructor;
+import main.api.request.PostRequest;
+import main.api.request.PostRequestId;
+import main.api.response.ErrorResponse;
 import main.api.response.postsResponse.PostsCommentResponse;
 import main.api.response.postsResponse.PostsResponseDTO;
 import main.model.ModePosts;
+import main.model.ModerationStatus;
 import main.model.MyPostStatus;
 import main.repository.PostInfoRepository;
 import main.service.PostInfoService;
@@ -20,6 +24,17 @@ public class ApiPostController {
 
     private final PostInfoService postInfoService;
     private final PostInfoRepository postInfoRepository;
+    private final int LIKE_VALUE = 1;
+    private final int DISLIKE_VALUE = -1;
+
+    @PreAuthorize("hasAuthority('user:moderate')")
+    @GetMapping("/moderation")
+    public ResponseEntity<PostsResponseDTO> moderationPosts(@RequestParam Integer offset,
+                                                              @RequestParam Integer limit,
+                                                              @RequestParam String status,
+                                                              Principal principal){
+        return ResponseEntity.ok(postInfoService.getModerationPosts(offset, limit, status, principal));
+    }
 
     @PreAuthorize("hasAuthority('user:write')")
     @GetMapping("/my")
@@ -67,6 +82,30 @@ public class ApiPostController {
         if (!postInfoRepository.findById(id).isPresent()) {
             return ResponseEntity.badRequest().body(null);
         } else return ResponseEntity.ok(postInfoService.getPostsById(id, principal));
+    }
+
+    @PreAuthorize("hasAuthority('user:write')")
+    @PostMapping()
+    public ResponseEntity<ErrorResponse> addPost(@RequestBody PostRequest postRequest, Principal principal) {
+        return ResponseEntity.ok(postInfoService.getNewPost(postRequest, principal));
+    }
+
+    @PreAuthorize("hasAuthority('user:write')")
+    @PutMapping("/{id}")
+    public ResponseEntity<ErrorResponse> refactorPost(@RequestBody PostRequest postRequest, Principal principal, @PathVariable int id) {
+        return ResponseEntity.ok(postInfoService.getRefactorPost(postRequest, principal, id));
+    }
+
+    @PreAuthorize("hasAuthority('user:write')")
+    @PostMapping("/like")
+    public ResponseEntity<ErrorResponse> like(@RequestBody PostRequestId postRequestId, Principal principal) {
+        return ResponseEntity.ok(postInfoService.getVote(postRequestId.getPostId(), principal,LIKE_VALUE));
+    }
+
+    @PreAuthorize("hasAuthority('user:write')")
+    @PostMapping("/dislike")
+    public ResponseEntity<ErrorResponse> dislike(@RequestBody PostRequestId postRequestId, Principal principal) {
+        return ResponseEntity.ok(postInfoService.getVote(postRequestId.getPostId(), principal,DISLIKE_VALUE));
     }
 
 }

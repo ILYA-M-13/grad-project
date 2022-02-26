@@ -1,6 +1,7 @@
 package main.repository;
 
 import main.api.response.CalendarProjection;
+import main.api.response.StatisticsResponse;
 import main.model.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ import java.util.Set;
 public interface PostInfoRepository extends JpaRepository<Post, Integer> {
 
     String SELECT = " select p from Post p ";
-    String WHERE = " where p.moderationStatus='ACCEPTED' and p.isActive='1' and p.time<=current_date() ";
+    String WHERE = " where p.moderationStatus='ACCEPTED' and p.isActive='1' and p.time <= now() ";
 
     @Query(SELECT + WHERE + " ORDER BY UNIX_TIMESTAMP(p.time) DESC")
     Page<Post> findAllOrderByTimeDesc(Pageable pageable);
@@ -34,20 +35,20 @@ public interface PostInfoRepository extends JpaRepository<Post, Integer> {
     Page<Post> findALLOrderByPostVotes(Pageable pageable);
 
     @Query(SELECT + " join p.user pu " +
-            "where pu.email like :email and p.moderationStatus='NEW' and p.isActive='1' and p.time<=current_date() ")
-    Page<Post> findMyPendingPost(Pageable pageable,@Param("email") String email);
+            "where pu.email like :email and p.moderationStatus='NEW' and p.isActive='1'  ")
+    Page<Post> findMyPendingPost(Pageable pageable, @Param("email") String email);
 
     @Query(SELECT + " join p.user pu " +
-            "where pu.email like :email and p.moderationStatus='ACCEPTED' and p.isActive='0' and p.time<=current_date() ")
-    Page<Post> findMyInactivePost(Pageable pageable,@Param("email") String email);
+            "where pu.email like :email and p.moderationStatus='ACCEPTED' and p.isActive='0'  ")
+    Page<Post> findMyInactivePost(Pageable pageable, @Param("email") String email);
 
     @Query(SELECT + " join p.user pu " +
-            "where pu.email like :email and p.moderationStatus='DECLINED' and p.isActive='1' and p.time<=current_date() ")
-    Page<Post> findMyDeclinedPost(Pageable pageable,@Param("email") String email);
+            "where pu.email like :email and p.moderationStatus='DECLINED' and p.isActive='1'  ")
+    Page<Post> findMyDeclinedPost(Pageable pageable, @Param("email") String email);
 
     @Query(SELECT + " join p.user pu " +
-            "where pu.email like :email and p.moderationStatus='ACCEPTED' and p.isActive='1' and p.time<=current_date() ")
-    Page<Post> findMyPublishedPost(Pageable pageable,@Param("email") String email);
+            "where pu.email like :email and p.moderationStatus='ACCEPTED' and p.isActive='1'  ")
+    Page<Post> findMyPublishedPost(Pageable pageable, @Param("email") String email);
 
     @Query(SELECT + WHERE + " and p.title like CONCAT('%',:query,'%')")
     Page<Post> findAllByQuery(Pageable pageable, @Param("query") String query);
@@ -70,4 +71,28 @@ public interface PostInfoRepository extends JpaRepository<Post, Integer> {
             "group by date")
     List<CalendarProjection> findDateAndCountPostsByDateInCalendar(@Param("year") Set<Integer> year);
 
+    @Query("select new main.api.response.StatisticsResponse( count(p.id), " +
+            "(select count(pv.id) from Post p join p.postVotes pv join p.user u " + WHERE + " and u.id like :id and pv.value = '1'), " +
+            "(select count(pv.id) from Post p join p.postVotes pv join p.user u " + WHERE + " and u.id like :id and pv.value = '-1'), " +
+            "sum(p.viewCount), " +
+            "min(UNIX_TIMESTAMP(p.time))) " +
+            "from Post p join p.user u " + WHERE + " and u.id like :id ")
+    StatisticsResponse getMyStatistics(@Param("id") int id);
+
+    @Query("select new main.api.response.StatisticsResponse( count(p.id), " +
+            "(select count(pv.id) from Post p join p.postVotes pv " + WHERE + " and pv.value = '1'), " +
+            "(select count(pv.id) from Post p join p.postVotes pv " + WHERE + " and pv.value = '-1'), " +
+            "sum(p.viewCount), " +
+            "min(UNIX_TIMESTAMP(p.time))) " +
+            "from Post p " + WHERE)
+    StatisticsResponse getAllStatistics();
+
+    @Query(SELECT + "where p.moderationStatus='NEW' and p.isActive='1'")
+    Page<Post> findNewPostByModerator(Pageable pageable);
+
+    @Query(SELECT + "join p.moderatorUser u where u.id like :moderatorId and p.moderationStatus='ACCEPTED' and p.isActive='1'")
+    Page<Post> findAcceptedPostByModerator(Pageable pageable, @Param("moderatorId") int moderatorId);
+
+    @Query(SELECT + "join p.moderatorUser u where u.id like :moderatorId and p.moderationStatus='DECLINED' and p.isActive='1'")
+    Page<Post> findDeclinedPostByModerator(Pageable pageable, @Param("moderatorId") int moderatorId);
 }

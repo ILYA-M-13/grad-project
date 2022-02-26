@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class RegistrationErrorResponse {
+public class ErrorResponse {
     private boolean result;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;

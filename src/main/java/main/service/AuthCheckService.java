@@ -3,7 +3,7 @@ package main.service;
 import lombok.AllArgsConstructor;
 import main.api.request.LoginRequest;
 import main.api.request.RegistrationRequest;
-import main.api.response.RegistrationErrorResponse;
+import main.api.response.ErrorResponse;
 import main.api.response.authCheckResponse.AuthCheckResponse;
 import main.model.CaptchaCode;
 import main.model.User;
@@ -31,12 +31,12 @@ public class AuthCheckService {
 
     public static final PasswordEncoder BCRYPT = new BCryptPasswordEncoder(12);
 
-    UserRepository userRepository;
-    CaptchaRepository captchaRepository;
-    AuthenticationManager authenticationManager;
-    ConverterService converterService;
+    private final UserRepository userRepository;
+    private final CaptchaRepository captchaRepository;
+    private final AuthenticationManager authenticationManager;
+    private final ConverterService converterService;
 
-    public RegistrationErrorResponse getRegister(RegistrationRequest registrationRequest) {
+    public ErrorResponse getRegistration(RegistrationRequest registrationRequest) {
         Optional<CaptchaCode> captchaCode =
                 captchaRepository.findCaptchaCodeBySecretCode(registrationRequest.getCaptchaSecret());
         Iterable<User> users = userRepository.findAll();
@@ -59,7 +59,7 @@ public class AuthCheckService {
             }
         } else errorResponse.put("captcha", "Код с картинки введён неверно или такого кода нет");
 
-        RegistrationErrorResponse response = new RegistrationErrorResponse();
+        ErrorResponse response = new ErrorResponse();
         if (errorResponse.isEmpty()) {
             response.setResult(true);
             User user = new User();
@@ -86,13 +86,13 @@ public class AuthCheckService {
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
-             org.springframework.security.core.userdetails.User user =
+        org.springframework.security.core.userdetails.User user =
                 (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 
         return getAuthCheckResponse(user.getUsername());
     }
 
-    public AuthCheckResponse logout(){
+    public AuthCheckResponse logout() {
         SecurityContextHolder.getContext().setAuthentication(null);
         AuthCheckResponse authCheckResponse = new AuthCheckResponse();
         authCheckResponse.setResult(true);

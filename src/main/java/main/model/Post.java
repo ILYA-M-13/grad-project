@@ -3,9 +3,8 @@ package main.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 @Data
 @Entity
 @Table(name = "posts")
@@ -49,7 +48,7 @@ public class Post {
     @JoinTable(name = "tag2post",
     joinColumns = {@JoinColumn(name = "post_id")},
     inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<PostVote> postVotes;

@@ -20,16 +20,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
+    private final HttpAuthenticationEntryPoint authenticationEntryPoint;
 
     public SecurityConfig(
-            @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+            @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, HttpAuthenticationEntryPoint authenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
@@ -39,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .logout()
+                .logoutUrl("api/auth/logout")
                 .clearAuthentication(true);
     }
 

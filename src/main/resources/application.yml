@@ -1,18 +1,29 @@
 spring:
-       datasource:
-                  url: jdbc:mysql://localhost:3306/dp?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&tinyInt1isBit=false
-                  username: root
-                  password: Op009oP!
-spring.jpa:
-           hibernate.ddl-auto: validate
-           show-sql: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/dp?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&tinyInt1isBit=false
+    username: root
+    password: Op009oP!
+  jpa:
+    hibernate.ddl-auto: validate
+    show-sql: false
+  mail:
+    host: smtp.gmail.com
+    username: 44.dev.pab@gmail.com
+    password: Vb2008Te
+    port: 587
+    properties:
+      mail.smtp:
+       auth: true
+       starttls.enable: true
 
 
+web:
+  upload-path: ${D:\Load\images}
 
-
-blog.title: DevPub
-blog.subtitle: Рассказы разработчиков
-blog.phone: +7 903 666-44-55
-blog.email: mail@mail.ru
-blog.copyright: Дмитрий Сергеев
-blog.copyrightFrom: 2005
+blog:
+  title: DevPub
+  subtitle: Рассказы разработчиков
+  phone: +7 903 666-44-55
+  email: mail@mail.ru
+  copyright: Дмитрий Сергеев
+  copyrightFrom: 2005
