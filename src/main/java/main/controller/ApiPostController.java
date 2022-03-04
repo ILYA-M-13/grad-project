@@ -27,24 +27,6 @@ public class ApiPostController {
     private final int LIKE_VALUE = 1;
     private final int DISLIKE_VALUE = -1;
 
-    @PreAuthorize("hasAuthority('user:moderate')")
-    @GetMapping("/moderation")
-    public ResponseEntity<PostsResponseDTO> moderationPosts(@RequestParam Integer offset,
-                                                              @RequestParam Integer limit,
-                                                              @RequestParam String status,
-                                                              Principal principal){
-        return ResponseEntity.ok(postInfoService.getModerationPosts(offset, limit, status, principal));
-    }
-
-    @PreAuthorize("hasAuthority('user:write')")
-    @GetMapping("/my")
-    public ResponseEntity<PostsResponseDTO> postsMy(@RequestParam Integer offset,
-                                                    @RequestParam Integer limit,
-                                                    @RequestParam MyPostStatus status,
-                                                    Principal principal) {
-        return ResponseEntity.ok(postInfoService.getMyPosts(offset, limit, status, principal));
-    }
-
     @GetMapping()
     public ResponseEntity<PostsResponseDTO> posts(@RequestParam Integer offset,
                                                   @RequestParam Integer limit,
@@ -65,7 +47,6 @@ public class ApiPostController {
                                                          @RequestParam String date) {
         return ResponseEntity.ok(postInfoService.getPostsByDate(offset, limit, date));
     }
-
     @GetMapping("/byTag")
     public ResponseEntity<PostsResponseDTO> searchByTag(@RequestParam Integer offset,
                                                         @RequestParam Integer limit,
@@ -82,6 +63,24 @@ public class ApiPostController {
         if (!postInfoRepository.findById(id).isPresent()) {
             return ResponseEntity.badRequest().body(null);
         } else return ResponseEntity.ok(postInfoService.getPostsById(id, principal));
+    }
+
+    @PreAuthorize("hasAuthority('user:moderate')")
+    @GetMapping("/moderation")
+    public ResponseEntity<PostsResponseDTO> moderationPosts(@RequestParam Integer offset,
+                                                              @RequestParam Integer limit,
+                                                              @RequestParam String status,
+                                                              Principal principal){
+        return ResponseEntity.ok(postInfoService.getModerationPosts(offset, limit, status, principal));
+    }
+
+    @PreAuthorize("hasAuthority('user:write')")
+    @GetMapping("/my")
+    public ResponseEntity<PostsResponseDTO> postsMy(@RequestParam Integer offset,
+                                                    @RequestParam Integer limit,
+                                                    @RequestParam MyPostStatus status,
+                                                    Principal principal) {
+        return ResponseEntity.ok(postInfoService.getMyPosts(offset, limit, status, principal));
     }
 
     @PreAuthorize("hasAuthority('user:write')")

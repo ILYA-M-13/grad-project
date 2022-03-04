@@ -16,10 +16,6 @@ spring:
        auth: true
        starttls.enable: true
 
-
-web:
-  upload-path: ${D:\Load\images}
-
 blog:
   title: DevPub
   subtitle: Рассказы разработчиков

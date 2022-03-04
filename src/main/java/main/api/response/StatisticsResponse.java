@@ -6,9 +6,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StatisticsResponse {
-    private long postCount;
-    private long likesCount;
-    private long dislikesCount;
-    private long viewsCount;
-    private long firstPublication;
+    private Long postsCount;
+    private Long likesCount;
+    private Long dislikesCount;
+    private Long viewsCount;
+    private Long firstPublication;
+
 }

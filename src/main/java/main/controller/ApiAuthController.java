@@ -2,6 +2,7 @@ package main.controller;
 
 import lombok.RequiredArgsConstructor;
 import main.api.request.LoginRequest;
+import main.api.request.PassChangeRequest;
 import main.api.request.PassRestoreRequest;
 import main.api.request.RegistrationRequest;
 import main.api.response.CaptchaResponse;
@@ -9,7 +10,6 @@ import main.api.response.ErrorResponse;
 import main.api.response.authCheckResponse.AuthCheckResponse;
 import main.service.AuthCheckService;
 import main.service.CaptchaService;
-import main.service.ProfileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,6 @@ import java.security.Principal;
 public class ApiAuthController {
     private final AuthCheckService authCheckService;
     private final CaptchaService captchaService;
-    private final ProfileService profileService;
 
     @GetMapping("/check")
     public ResponseEntity<AuthCheckResponse> authCheck(Principal principal) {
@@ -52,7 +51,12 @@ public class ApiAuthController {
 
     @PostMapping("/restore")
     public ResponseEntity<ErrorResponse> restorePassword(@RequestBody PassRestoreRequest pass) {
-        return ResponseEntity.ok(profileService.getRestorePassword(pass));
+        return ResponseEntity.ok(authCheckService.getRestorePassword(pass));
+    }
+
+    @PostMapping("/password")
+    public ResponseEntity<ErrorResponse> changePassword(@RequestBody PassChangeRequest pass) {
+        return ResponseEntity.ok(authCheckService.getChangePassword(pass));
     }
 }
 

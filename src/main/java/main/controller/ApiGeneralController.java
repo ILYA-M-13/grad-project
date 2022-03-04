@@ -2,6 +2,7 @@ package main.controller;
 
 import lombok.RequiredArgsConstructor;
 import main.api.request.CommentRequest;
+import main.api.request.EditProfileRequest;
 import main.api.request.ModerationRequest;
 import main.api.request.SettingsRequest;
 import main.api.response.*;
@@ -29,7 +30,8 @@ public class ApiGeneralController {
     private final CalendarService calendarService;
     private final PostInfoService postInfoService;
     private final CommentService commentService;
-    private final ImageService imageService;
+    private final AuthCheckService authCheckService;
+    private final ImageAndProfileService imageAndProfileService;
 
     @GetMapping("/init")
     public InitResponseDTO init() {
@@ -52,12 +54,47 @@ public class ApiGeneralController {
     }
 
     @PreAuthorize("hasAuthority('user:write')")
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> image(@RequestParam("image") MultipartFile file) throws IOException {
+        if (imageAndProfileService.checkImage(file)) {
+            return ResponseEntity.ok(imageAndProfileService.loadImage(file));
+        } else return ResponseEntity.badRequest().body(imageAndProfileService.errorLoad());
+    }
+
+    @PreAuthorize("hasAuthority('user:write')")
     @PostMapping("/comment")
     public ResponseEntity<?> comment(@RequestBody CommentRequest commentRequest, Principal principal) {
         if (!commentService.checkRequest(commentRequest).isEmpty()) {
             return ResponseEntity.badRequest().body(commentService.errorResponse(commentService.checkRequest(commentRequest)));
         }
         return ResponseEntity.ok().body(commentService.addComment(commentRequest, principal));
+    }
+
+    @PreAuthorize("hasAuthority('user:moderate')")
+    @PostMapping("/moderation")
+    public ResponseEntity<ErrorResponse> moderationPost(@RequestBody ModerationRequest moderationRequest,
+                                                        Principal principal) {
+        return ResponseEntity.ok(postInfoService.getModerationPost(moderationRequest, principal));
+    }
+
+    @PreAuthorize("hasAuthority('user:write')")
+    @PostMapping(value = "/profile/my", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ErrorResponse> editProfile(@RequestBody EditProfileRequest profileRequest,
+                                                     Principal principal) {
+        return ResponseEntity.ok(authCheckService.editMyProfile(profileRequest, principal));
+    }
+
+    @PreAuthorize("hasAuthority('user:write')")
+    @PostMapping(value = "/profile/my", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ErrorResponse> editProfile
+            (@RequestParam("photo") MultipartFile photo,
+             @RequestParam("removePhoto") boolean removePhoto,
+             @RequestParam("name") String name,
+             @RequestParam("email") String email,
+             @RequestParam(value = "password", required = false) String password,
+             Principal principal) throws IOException {
+        return ResponseEntity.ok(imageAndProfileService.editMyProfileWithPhoto
+                (photo, removePhoto, name, email, password, principal));
     }
 
     @PreAuthorize("hasAuthority('user:write')")
@@ -80,22 +117,5 @@ public class ApiGeneralController {
         settingsService.setGlobalSettings(settingsRequest);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
-    @PreAuthorize("hasAuthority('user:moderate')")
-    @PostMapping("/moderation")
-    public ResponseEntity<ErrorResponse> getModerationPost(@RequestBody ModerationRequest moderationRequest,
-                                                           Principal principal) {
-        return ResponseEntity.ok(postInfoService.getModeration(moderationRequest, principal));
-    }
-
-    @PreAuthorize("hasAuthority('user:write')")
-    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> image(@RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println(file.getOriginalFilename());
-        if (imageService.checkImage(file)) {
-            return ResponseEntity.ok(imageService.loadImage(file));
-        } else return ResponseEntity.badRequest().body(imageService.errorLoad());
-    }
-
 
 }

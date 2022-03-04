@@ -14,10 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -46,7 +44,7 @@ public class PostInfoService {
         return getPostsResponseDTO(pagePosts);
     }
 
-    public ErrorResponse getModeration(ModerationRequest moderationRequest, Principal principal) {
+    public ErrorResponse getModerationPost(ModerationRequest moderationRequest, Principal principal) {
         ErrorResponse resultResponse = new ErrorResponse();
         User moderator = getAuthUser(principal);
         int id = moderationRequest.getPostId();
