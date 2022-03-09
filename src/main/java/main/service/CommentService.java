@@ -26,24 +26,16 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final int MIN_LENGTH_COMMENT = 5;
 
-    public Map<String, String> checkRequest(CommentRequest commentRequest) {
-        Map<String, String> errors = new HashMap<>();
-        if (commentRequest.getText().length() < MIN_LENGTH_COMMENT) {
-            errors.put("text", "Текст комментария не задан или слишком короткий");
-        }
-
+    public boolean checkRequest(CommentRequest commentRequest) {
         Optional<Post> post = postInfoRepository.findActivePostById(commentRequest.getPostId());
-        if (post.isEmpty()) {
-            errors.put("post", "Post not found");
+        if (commentRequest.getText().length() < MIN_LENGTH_COMMENT || post.isEmpty()) {
+            return false;
         }
-
         if (commentRequest.getParentId() != null) {
             Optional<PostComment> postComment = commentRepository.findById(commentRequest.getParentId());
-            if (postComment.isEmpty()) {
-                errors.put("comment", "Comment not found");
-            }
+            return postComment.isPresent();
         }
-        return errors;
+        return true;
     }
 
     public ErrorResponse errorResponse(Map<String, String> error) {

@@ -33,7 +33,7 @@ public class PostInfoService {
         User moderator = getAuthUser(principal);
         Pageable pageable = PageRequest.of(offset / limit, limit);
         Page<Post> pagePosts = postInfoRepository.findNewPostByModerator(pageable);
-        switch (status) {
+                switch (status) {
             case "accepted":
                 pagePosts = postInfoRepository.findAcceptedPostByModerator(pageable, moderator.getId());
                 break;
@@ -229,12 +229,24 @@ public class PostInfoService {
 
             post.setTime(postRequest.getTimestamp() <= new Date().getTime() ?
                     new Date() : new Date(postRequest.getTimestamp()));
-            post.setModerationStatus(user.isModerator() ? post.getModerationStatus() : ModerationStatus.NEW);
+            if (user.isModerator() || !settingsRepository.findGlobalSettingByName("POST_PREMODERATION").equals("YES")) {
+                post.setModerationStatus(post.getModerationStatus());
+            } else post.setModerationStatus(ModerationStatus.NEW);
             post.setActive(postRequest.getActive() == 1);
             post.setViewCount(post.getViewCount());
             post.setTags(getTagList(postRequest.getTags()));
         }
         return getErrorResponse(error, post);
+    }
+
+    public boolean checkPost(int id, Principal principal) {
+        User user = getAuthUser(principal);
+        if (user.isModerator()) {
+            Optional<Post> optionalPost = postInfoRepository.findById(id);
+            return optionalPost.isPresent();
+        }
+        Optional<Post> optionalPost = postInfoRepository.findAllByEmail(user.getEmail(), id);
+        return optionalPost.isPresent();
     }
 
     public User getAuthUser(Principal principal) {

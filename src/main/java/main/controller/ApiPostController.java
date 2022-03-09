@@ -7,7 +7,6 @@ import main.api.response.ErrorResponse;
 import main.api.response.postsResponse.PostsCommentResponse;
 import main.api.response.postsResponse.PostsResponseDTO;
 import main.model.ModePosts;
-import main.model.ModerationStatus;
 import main.model.MyPostStatus;
 import main.repository.PostInfoRepository;
 import main.service.PostInfoService;
@@ -47,6 +46,7 @@ public class ApiPostController {
                                                          @RequestParam String date) {
         return ResponseEntity.ok(postInfoService.getPostsByDate(offset, limit, date));
     }
+
     @GetMapping("/byTag")
     public ResponseEntity<PostsResponseDTO> searchByTag(@RequestParam Integer offset,
                                                         @RequestParam Integer limit,
@@ -68,9 +68,9 @@ public class ApiPostController {
     @PreAuthorize("hasAuthority('user:moderate')")
     @GetMapping("/moderation")
     public ResponseEntity<PostsResponseDTO> moderationPosts(@RequestParam Integer offset,
-                                                              @RequestParam Integer limit,
-                                                              @RequestParam String status,
-                                                              Principal principal){
+                                                            @RequestParam Integer limit,
+                                                            @RequestParam String status,
+                                                            Principal principal) {
         return ResponseEntity.ok(postInfoService.getModerationPosts(offset, limit, status, principal));
     }
 
@@ -91,20 +91,24 @@ public class ApiPostController {
 
     @PreAuthorize("hasAuthority('user:write')")
     @PutMapping("/{id}")
-    public ResponseEntity<ErrorResponse> refactorPost(@RequestBody PostRequest postRequest, Principal principal, @PathVariable int id) {
-        return ResponseEntity.ok(postInfoService.getRefactorPost(postRequest, principal, id));
+    public ResponseEntity<?> refactorPost(@RequestBody PostRequest postRequest,
+                                          Principal principal,
+                                          @PathVariable int id) {
+        return postInfoService.checkPost(id, principal)
+                ? ResponseEntity.ok(postInfoService.getRefactorPost(postRequest, principal, id))
+                : ResponseEntity.notFound().build();
     }
 
     @PreAuthorize("hasAuthority('user:write')")
     @PostMapping("/like")
     public ResponseEntity<ErrorResponse> like(@RequestBody PostRequestId postRequestId, Principal principal) {
-        return ResponseEntity.ok(postInfoService.getVote(postRequestId.getPostId(), principal,LIKE_VALUE));
+        return ResponseEntity.ok(postInfoService.getVote(postRequestId.getPostId(), principal, LIKE_VALUE));
     }
 
     @PreAuthorize("hasAuthority('user:write')")
     @PostMapping("/dislike")
     public ResponseEntity<ErrorResponse> dislike(@RequestBody PostRequestId postRequestId, Principal principal) {
-        return ResponseEntity.ok(postInfoService.getVote(postRequestId.getPostId(), principal,DISLIKE_VALUE));
+        return ResponseEntity.ok(postInfoService.getVote(postRequestId.getPostId(), principal, DISLIKE_VALUE));
     }
 
 }

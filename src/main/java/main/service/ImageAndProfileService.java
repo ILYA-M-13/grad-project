@@ -33,7 +33,6 @@ public class ImageAndProfileService {
     private final UserRepository userRepository;
     private final long MAX_SIZE = 5 * 1_024 * 1_024;
     private final int IMAGE_MAX_WIDTH = 300;
-    private final int IMAGE_MAX_HEIGHT = 300;
     private final int PHOTO_MAX_WIDTH = 36;
     private final int PHOTO_MAX_HEIGHT = 36;
     private final int MIN_LENGTH_PAS = 6;

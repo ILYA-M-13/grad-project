@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -32,6 +34,7 @@ public class ApiGeneralController {
     private final CommentService commentService;
     private final AuthCheckService authCheckService;
     private final ImageAndProfileService imageAndProfileService;
+    private final int MIN_LENGTH_COMMENT = 5;
 
     @GetMapping("/init")
     public InitResponseDTO init() {
@@ -64,10 +67,14 @@ public class ApiGeneralController {
     @PreAuthorize("hasAuthority('user:write')")
     @PostMapping("/comment")
     public ResponseEntity<?> comment(@RequestBody CommentRequest commentRequest, Principal principal) {
-        if (!commentService.checkRequest(commentRequest).isEmpty()) {
-            return ResponseEntity.badRequest().body(commentService.errorResponse(commentService.checkRequest(commentRequest)));
+        if (commentService.checkRequest(commentRequest)) {
+            return ResponseEntity.ok().body(commentService.addComment(commentRequest, principal));
         }
-        return ResponseEntity.ok().body(commentService.addComment(commentRequest, principal));
+        Map<String, String> errors = new HashMap<>();
+        if (commentRequest.getText().length() < MIN_LENGTH_COMMENT) {
+            errors.put("text", "Текст комментария не задан или слишком короткий");
+        }
+        return ResponseEntity.badRequest().body(commentService.errorResponse(errors));
     }
 
     @PreAuthorize("hasAuthority('user:moderate')")

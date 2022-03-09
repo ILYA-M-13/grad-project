@@ -62,6 +62,10 @@ public interface PostInfoRepository extends JpaRepository<Post, Integer> {
     @Query(SELECT + WHERE + " and p.id like :id")
     Optional<Post> findActivePostById(@Param("id") int id);
 
+    @Query(SELECT + " join p.user pu " +
+            "where pu.email like :email and p.id like :id")
+    Optional<Post> findAllByEmail(@Param("email") String email, @Param("id") int id);
+
     @Query("select YEAR(p.time) as pt " +
             "from Post p " + WHERE + " group by pt order by pt asc")
     List findYearInCalendar();
