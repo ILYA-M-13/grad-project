@@ -1,0 +1,1 @@
+web: java -jar target/grad-project-1.0.jar
