@@ -197,9 +197,9 @@ public class PostInfoService {
             error.put("title", "Заголовок не установлен");
         } else post.setTitle(postRequest.getTitle());
 
-        if (converter.formatText(postRequest.getText()).length() < 50) {
+        if (postRequest.getText().length() < 50) {
             error.put("text", "Текст публикации слишком короткий");
-        } else post.setText(converter.formatText(postRequest.getText()));
+        } else post.setText(postRequest.getText());
 
         post.setTime(postRequest.getTimestamp() <= new Date().getTime() ?
                 new Date() : new Date(postRequest.getTimestamp()));
@@ -223,9 +223,9 @@ public class PostInfoService {
                 error.put("title", "Заголовок не установлен");
             } else post.setTitle(postRequest.getTitle());
 
-            if (converter.formatText(postRequest.getText()).length() < 50) {
+            if (postRequest.getText().length() < 50) {
                 error.put("text", "Текст публикации слишком короткий");
-            } else post.setText(converter.formatText(postRequest.getText()));
+            } else post.setText(postRequest.getText());
 
             post.setTime(postRequest.getTimestamp() <= new Date().getTime() ?
                     new Date() : new Date(postRequest.getTimestamp()));

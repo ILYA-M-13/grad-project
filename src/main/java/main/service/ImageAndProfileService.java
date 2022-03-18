@@ -74,11 +74,11 @@ public class ImageAndProfileService {
 
             BufferedImage bufferedImage = ImageIO.read(photo.getInputStream());
             String ext = FilenameUtils.getExtension(photo.getOriginalFilename());
-            String pathToPhoto = "/upload/" + user.getId() + "/" + photo.getOriginalFilename();
+            String pathToPhoto = "upload/" + user.getId() + "/" + photo.getOriginalFilename();
             Path path = Paths.get(pathToPhoto);
             resize(bufferedImage, PHOTO_MAX_WIDTH, PHOTO_MAX_HEIGHT, path, ext);
 
-            user.setPhoto(pathToPhoto);
+            user.setPhoto("/"+pathToPhoto.substring(pathToPhoto.lastIndexOf("upload")));
             userRepository.save(user);
             errorResponse.setResult(true);
             return errorResponse;

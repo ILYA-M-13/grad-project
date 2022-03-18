@@ -55,7 +55,7 @@ public class CommentService {
         }
         PostComment postComment = new PostComment();
         postComment.setUser(user);
-        postComment.setText(commentRequest.getText().replaceAll("\\<.*?>", ""));
+        postComment.setText(commentRequest.getText());                              //replaceAll("\\<.*?>", ""));
         postComment.setTime(Date.from(Instant.now()));
         postComment.setPost(post.get());
         postComment.setParentComment(parentComment);

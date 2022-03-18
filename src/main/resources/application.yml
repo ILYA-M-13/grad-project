@@ -8,8 +8,8 @@ spring:
     show-sql: false
   mail:
     host: smtp.gmail.com
-    username: 44.dev.pab@gmail.com
-    password: Vb2008Te
+    username: ${EMAIL}
+    password: ${EMAIL_PASSWORD}
     port: 587
     properties:
       mail.smtp:
