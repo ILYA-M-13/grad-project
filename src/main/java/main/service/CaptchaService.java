@@ -41,7 +41,7 @@ public class CaptchaService {
         return new CaptchaResponse(secret, image);
     }
 
-    private String genString(int len) {
+    public String genString(int len) {
         char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
         String captcha = "";
         for (int i = 0; i < len; i++) {
