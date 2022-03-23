@@ -1,6 +1,5 @@
 package main.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import main.api.response.CalendarProjection;
 import main.api.response.CalendarResponse;
 import main.repository.PostInfoRepository;
@@ -11,11 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.*;
 
@@ -26,10 +22,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class CalendarServiceTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private ObjectMapper objectMapper;
     @InjectMocks
     CalendarService calendarService;
     @Mock

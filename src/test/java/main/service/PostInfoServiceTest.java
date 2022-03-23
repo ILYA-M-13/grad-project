@@ -1,6 +1,5 @@
 package main.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import main.api.request.ModerationRequest;
 import main.api.request.PostRequest;
 import main.api.response.ErrorResponse;
@@ -20,11 +19,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -38,10 +34,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class PostInfoServiceTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private ObjectMapper objectMapper;
+
     @Mock
     private ConverterService converter;
     @Mock

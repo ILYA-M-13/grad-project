@@ -106,7 +106,7 @@ public class ImageAndProfileService {
         return "/"+path.toString().replaceAll("\\\\", "/");
     }
 
-    private void resize(BufferedImage bufferedImage, int width, int height, Path path, String ext) throws IOException {
+     void resize(BufferedImage bufferedImage, int width, int height, Path path, String ext) throws IOException {
         if (!path.toFile().exists()) {
             Files.createDirectories(path.getParent());
             Files.createFile(path);

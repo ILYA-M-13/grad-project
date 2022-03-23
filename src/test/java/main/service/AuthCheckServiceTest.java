@@ -1,6 +1,5 @@
 package main.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import main.api.request.EditProfileRequest;
 import main.api.request.PassChangeRequest;
 import main.api.request.PassRestoreRequest;
@@ -17,10 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -34,10 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class AuthCheckServiceTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private ObjectMapper objectMapper;
+
     @InjectMocks
     AuthCheckService authCheckService;
     @Mock

@@ -1,6 +1,5 @@
 package main.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import main.api.request.CommentRequest;
 import main.api.response.commentResponse.IdCommentResponse;
 import main.model.Post;
@@ -15,9 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.security.Principal;
 import java.util.Date;
@@ -30,10 +26,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class CommentServiceTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private ObjectMapper objectMapper;
     @InjectMocks
     CommentService commentService;
     @Mock
@@ -112,7 +104,8 @@ public class CommentServiceTest {
 
         Mockito.when(postInfoService.getAuthUser(Mockito.any())).thenReturn(user);
         Mockito.when(postInfoRepository.findActivePostById(Mockito.anyInt())).thenReturn(Optional.of(post));
+        Mockito.when(commentRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
         IdCommentResponse response = commentService.addComment(validRequest,principal);
-        verify(commentRepository, times(1)).save(postComment);
+        verify(commentRepository, times(1)).save(Mockito.any(PostComment.class));
     }
 }

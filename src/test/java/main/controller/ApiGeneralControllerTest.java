@@ -1,6 +1,5 @@
 package main.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import main.api.request.CommentRequest;
 import main.api.response.ErrorResponse;
 import main.api.response.commentResponse.IdCommentResponse;
@@ -14,10 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,10 +26,6 @@ import static org.springframework.http.HttpStatus.*;
 @ExtendWith(MockitoExtension.class)
 public class ApiGeneralControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private ObjectMapper objectMapper;
     @InjectMocks
     ApiGeneralController apiGeneralController;
     @Mock

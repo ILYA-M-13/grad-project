@@ -1,6 +1,5 @@
 package main.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import main.api.response.tagsResponse.TagsResponse;
 import main.api.response.tagsResponse.TagsResponseDTO;
 import main.repository.TagsRepository;
@@ -11,9 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class TagsServiceTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private ObjectMapper objectMapper;
+
     @InjectMocks
     TagsService tagsService;
     @Mock
